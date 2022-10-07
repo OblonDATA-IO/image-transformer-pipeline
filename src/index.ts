@@ -4,7 +4,7 @@
  * Created by Thomas Sham on 22/10/2020.
  */
 
-import sharp from "sharp";
+import sharp, { Sharp, FormatEnum } from "sharp";
 
 const DefaultSizes = [
     480, 800, 1200,
@@ -28,19 +28,16 @@ export function transformStreamBuilder (
     const srcStream = sharp(options);
     const destStreams = sizes
         .map(
-            size => [srcStream.clone().resize(size), size]
+            (size: number): [Sharp, number] => [srcStream.clone().resize(size), size]
         )
         .map(
             ([resizer, size]) => {
                 return [
                     formats.map(
-                        ([format, options]) => [
+                        ([format, options]: [string, any]) => [
                             resizer
                                 .clone()
-                                .toFormat(
-                                    format,
-                                    options,
-                                ),
+                                .toFormat(<keyof FormatEnum>format, options),
                             format
                         ]
                     ),
