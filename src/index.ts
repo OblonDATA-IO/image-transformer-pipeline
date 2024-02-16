@@ -24,9 +24,9 @@ export function transformStreamBuilder (
     sizes: number[] = DefaultSizes,
     formats = DefaultFormats,
     options = DefaultOptions,
-) {
-    const srcStream = sharp(options);
-    const destStreams = sizes
+): [Sharp, [[Sharp, string][], number][]] {
+    const srcStream: Sharp = sharp(options);
+    const destStreams: [[Sharp, string][], number][] = sizes
         .map(
             (size: number): [Sharp, number] => [srcStream.clone().resize(size), size]
         )
